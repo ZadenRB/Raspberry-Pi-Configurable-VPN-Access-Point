@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Toggle VPN</title>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<link rel="shortcut icon" href="img/default.png">
+<style>
+#toggleButton {
+    width: 20vw;
+    padding-top: 2.5vw;
+    padding-bottom: 2.5vw;
+    border: 0;
+    border-radius: 10px;
+    font-size: 2.5vw;
+    text-align: center;
+}
+#toggleButton:hover {
+    cursor: pointer;
+}
+#toggleButton:focus {
+    outline: 0;
+}
+#statusText {
+    margin-bottom: 2.5vw;
+    font-size: 4vw;
+}
+body {
+    margin-right: 0;
+    margin-left: 0;
+    text-align: center;
+}
+</style>
+</head>
+<body>
+<div id="statusText" style="color: #999999">Checking VPN status...</div>
+<button id="toggleButton" type="button" style="background-color: #999999; color: #FFF">Toggle VPN</button>
+<script type="text/javascript">
+function checkVPN() {
+    var findlink = document.getElementsByTagName("link");
+    var btn = document.getElementById("toggleButton");
+    var text = document.getElementById("statusText");
+    $.ajax({
+        type: 'POST',
+        url: 'checkVPN.php',
+        success: function(message) {
+            if (message != 0) {
+                findlink[0].href = "img/on.png";
+                text.innerText = "VPN is currently active " + "\u2713";
+                text.style.color = "#00e500";
+                btn.style.backgroundColor = "#e50000";
+                btn.innerText = "Disable VPN";
+            } else {
+                findlink[0].href = "img/off.png";
+                text.innerText = "VPN is currently inactive " + "\u2715";
+                text.style.color = "#e50000";
+                btn.style.backgroundColor = "#00e500";
+                btn.innerText = "Enable VPN";
+            }
+        }
+    });
+}
+function toggleVPN() {
+    var btn = document.getElementById("toggleButton");
+    var text = document.getElementById("statusText");
+    text.innerText = "Toggling VPN...";
+    text.style.color = "#999999";
+    btn.innerText = "Toggling VPN...";
+    btn.style.backgroundColor = "#999999";
+    $.ajax({
+        type: 'POST',
+        url: 'toggleVPN.php',
+        success: function(data) {
+            checkVPN();
+        }
+    });
+}
+$(document).ready(function() {
+    checkVPN();
+    $('button').click(function() {
+        toggleVPN();
+    });
+});
+</script>
+</body>
+</html>
