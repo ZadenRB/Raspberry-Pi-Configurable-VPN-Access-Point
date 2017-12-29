@@ -1,7 +1,7 @@
-# **Raspberry Pi as a Wireless Access Point with a VPN, Configurable with a Web Interface**
+# Raspberry Pi as a Wireless Access Point with a VPN, Configurable with a Web Interface
 In this guide, I'll be setting up a Raspberry Pi 3 as a wireless access point with a VPN, which each user can disable/enable for themselves via a web interface.
 
-### **Installing Packages**
+### Installing Packages
 First, ensure that everything is up to date:
 ```
 sudo apt-get update
@@ -11,7 +11,7 @@ Next, install the necessary packages:
 
     sudo apt-get install OpenVPN dnsmasq hostapd unzip apache2 libapache2-mod-php5 php5 php-pear php5-xcache php5-mysql php5-curl php5-gd
 
-### **Set up the VPN**
+### Set up the VPN
 In this example, we will be using [Private Internet Access](https://www.privateinternetaccess.com/) as my VPN provider, but as long as your VPN provider supports OpenVPN these steps should be essentially the same. Start by moving into the OpenVPN directory:
 
     cd /etc/openvpn
@@ -68,7 +68,7 @@ To actually run the command on startup, we will edit the `rc.local` file:
     sudo nano /etc/rc.local
 
 and add the above command just above `exit 0`.
-### **Setting up the Wireless Access Point**
+### Setting up the Wireless Access Point
 Open up the `dhcpcd.conf` file in order to ignore the `wlan0` interface, since it will be configured elsewhere:
 
     sudo nano /etc/dhcpcd.conf
@@ -178,7 +178,7 @@ iptables-restore < /etc/iptables.ipv4.nat
 sleep 5
 ```
 Now, run `sudo reboot` and once the Pi has restarted, try to connect to your access point to confirm that it is working.
-### **Allowing Routing Around the VPN**
+### Allowing Routing Around the VPN
 We will be creating a web interface in order for users to toggle the VPN on and off. The basic setup, however, simply involves marking packets from a particular source(user) and creating a routing rule for marked packets in order to route them via `eth0` instead of `tun0`. First, we will add the rule for marked packets, and make sure to run the command when the `wlan0` interface is configured.
 
     sudo nano /etc/network/interfaces
@@ -204,7 +204,7 @@ This adds a rule to the `mangle` table in the `PREROUTING` chain(before any rout
     sudo sh -c "iptables-save > /etc/iptables.ipv4.nat"
 
 again to save the rule. If you don't mind manually running this command for each user who wants to disable the VPN, you can stop here. To re-enable the VPN for a user, run the same command, but replace `-A` with `-D` to delete the rule. If you want each user to be able to enable or disable the VPN for themselves, continue on.
-### **Setting up the Web Interface**
+### Setting up the Web Interface
 We will use Apache for the web server, which we have already installed. check to confirm by visiting `172.24.1.1` from a device connected to your access point. It should display the default Apache web page. Before we edit this, we will create the directories necessary for our page:
 ```
 sudo mkdir /var/www/scripts
