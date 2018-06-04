@@ -218,6 +218,8 @@ and add the line:
 
     www-data ALL=(ALL) NOPASSWD: ALL
 
+Finally, run `chmod -R +x /var/www/scripts` to make the scripts executable.
+
 Make sure to save to the actual `/etc/sudoers` file, not `/etc/sudoers.tmp`.
 Now if you visit `172.24.1.1` the interface should be fully functioning. To check and ensure that the VPN is being enabled/disabled, use:
 
