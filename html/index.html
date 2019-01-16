@@ -3,7 +3,7 @@
 <head>
 <title>Toggle VPN</title>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<link rel="shortcut icon" href="img/default.png">
+<link rel="shortcut icon" href="img/toggling.png">
 <style>
 #toggleButton {
     width: 20vw;
@@ -63,8 +63,10 @@ function checkVPN() {
     });
 }
 function toggleVPN() {
+    var findlink = document.getElementsByTagName("link");
     var btn = document.getElementById("toggleButton");
     var text = document.getElementById("statusText");
+    findlink[0].href = "img/toggling.png"
     text.innerText = "Toggling VPN...";
     text.style.color = "#999999";
     btn.innerText = "Toggling VPN...";

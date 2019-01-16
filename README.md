@@ -60,10 +60,12 @@ password
 The following command will start the VPN:
 
     sudo openvpn --config "/etc/openvpn/US West.ovpn" --auth-user-pass /etc/openvpn/auth-pass.txt
-To actually run the command on startup, we will edit the `rc.local` file:
+To actually run the command on startup, we will edit the `/etc/default/openvpn` file:
 
-    sudo nano /etc/rc.local
-and add the above command just above `exit 0`.
+    AUTOSTART="USWest"
+You must rename your configuration file to have no spaces and be a .conf file, otherwise it will not be recognized properly:
+
+    sudo mv "/etc/openvpn/US West.ovpn" /etc/openvpn/USWest.conf
 ### Setting up the Wireless Access Point
 First we will configure `wlan0` using `dhcpcd`. Open it's configuration file:
 
@@ -132,10 +134,10 @@ sudo iptables -A FORWARD -i wlan0 -o eth0 -j ACCEPT
 Now save these rules:
 
     sudo sh -c "iptables-save > /etc/iptables.ipv4.nat"
-To have the rules be restored on reboot, once again edit `rc.local`
+To have the rules be restored on reboot, edit up.sh:
 
-    sudo nano /etc/rc.local
-and add the following just above `openvpn` line:
+    sudo nano /etc/openvpn/up.sh
+and add the following at the bottom of the file:
 
     iptables-restore < /etc/iptables.ipv4.nat
 Now, run `sudo reboot` and once the Pi has restarted, try to connect to your access point to confirm that it is working(See the troubleshooting section if you have difficulties, or open and issue if it remains unresolved).
