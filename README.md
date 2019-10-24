@@ -172,8 +172,8 @@ Now if you visit `172.24.1.1` the interface should be fully functioning. To chec
 
     curl ifconfig.me
 and see if the IP is changing.
-###Troubleshooting
-#####Can connect to the access point, but quickly lose the connection
+### Troubleshooting
+Can connect to the access point, but quickly lose the connection
 This issue may be due to `dnsmasq` attempting to start before `dhcpcd` has properly configured `wlan0`. To fix this, run `sudo systemctl disable dnsmasq` to prevent it from starting on boot, and instead run it manually from the dhcpcd start file:
 
     sudo nano /etc/dhcpcd.enter-hook
